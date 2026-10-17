@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>The Fall of Pompeii (79 AD): Cognitive Blindness, Unpreparedness, and Volcanological Dynamics</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --surface: #ffffff;
+      --surface-2: #eef2f8;
+      --text: #121826;
+      --muted: #5b6475;
+      --border: rgba(18, 24, 38, 0.12);
+      --accent: #335cff;
+      --accent-2: #0f766e;
+      --danger: #b42318;
+      --shadow: 0 10px 30px rgba(18, 24, 38, 0.08);
+      --radius: 18px;
+      --maxw: 1120px;
+      --line: 1.65;
+      --sidebar-width: 260px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: var(--line);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: var(--accent); text-decoration: none; word-break: break-word; overflow-wrap: break-word; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .toc-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc-item {
+      margin-bottom: 8px;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .toc-link:hover {
+      background: var(--surface-2);
+    }
+
+    .toc-link.active {
+      background: var(--accent);
+      color: #1a1a1a;
+    }
+
+    /* Color-coded TOC items — 10 color slots */
+    .toc-item:nth-child(1) .toc-link { border-left: 4px solid #2d6a4f; background: rgba(184, 224, 208, 0.3); }
+    .toc-item:nth-child(2) .toc-link { border-left: 4px solid #1d3557; background: rgba(197, 213, 216, 0.3); }
+    .toc-item:nth-child(3) .toc-link { border-left: 4px solid #457b9d; background: rgba(200, 223, 240, 0.3); }
+    .toc-item:nth-child(4) .toc-link { border-left: 4px solid #4a4e69; background: rgba(192, 201, 208, 0.3); }
+    .toc-item:nth-child(5) .toc-link { border-left: 4px solid #9d4edd; background: rgba(237, 213, 206, 0.3); }
+    .toc-item:nth-child(6) .toc-link { border-left: 4px solid #6c757d; background: rgba(197, 200, 202, 0.3); }
+    .toc-item:nth-child(7) .toc-link { border-left: 4px solid #40916c; background: rgba(192, 230, 208, 0.3); }
+    .toc-item:nth-child(8) .toc-link { border-left: 4px solid #7b2cbf; background: rgba(224, 208, 232, 0.3); }
+    .toc-item:nth-child(9) .toc-link { border-left: 4px solid #d4a373; background: rgba(240, 224, 192, 0.3); }
+    .toc-item:nth-child(10) .toc-link { border-left: 4px solid #5c677d; background: rgba(200, 213, 229, 0.3); }
+
+    .toc-item:nth-child(1) .toc-link.active { background: #b8e0d0; }
+    .toc-item:nth-child(2) .toc-link.active { background: #c5d5d8; }
+    .toc-item:nth-child(3) .toc-link.active { background: #c8dff0; }
+    .toc-item:nth-child(4) .toc-link.active { background: #c0c9d0; }
+    .toc-item:nth-child(5) .toc-link.active { background: #edd5ce; }
+    .toc-item:nth-child(6) .toc-link.active { background: #c5c8ca; }
+    .toc-item:nth-child(7) .toc-link.active { background: #c0e6d0; }
+    .toc-item:nth-child(8) .toc-link.active { background: #e0d0e8; }
+    .toc-item:nth-child(9) .toc-link.active { background: #f0e0c0; }
+    .toc-item:nth-child(10) .toc-link.active { background: #c8d5e5; }
+
+    .toc-sublist {
+      list-style: none;
+      padding-left: 16px;
+      margin: 4px 0 0;
+    }
+
+    .toc-sublist.collapsed { display: none; }
+
+    .toc-subitem {
+      margin-bottom: 4px;
+    }
+
+    .toc-sublink {
+      font-size: 0.9rem;
+      padding: 4px 8px;
+      color: var(--muted);
+    }
+
+    .toc-sublink:hover {
+      background: var(--surface-2);
+    }
+
+    .toc-sublink.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      padding: 24px;
+      max-width: calc(100% - var(--sidebar-width));
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+    }
+
+    .hero { padding: 34px 0 18px; }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface) 88%, transparent);
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      max-width: 16ch;
+    }
+
+    .lede {
+      max-width: 70ch;
+      font-size: 1.06rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    @media (max-width: 900px) {
+      .container { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 16px; }
+      .main-content { max-width: 100%; padding: 16px; }
+      .toc-title { display: none; }
+      .toc-list { display: flex; flex-wrap: wrap; gap: 8px; }
+      .toc-item { flex: 1 1 auto; }
+      .toc-link { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .toc-sublist.collapsed { display: none; }
+      .grid.cols-3 { grid-template-columns: 1fr; }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat strong { font-size: 1.8rem; letter-spacing: -0.03em; }
+    .stat span { color: var(--muted); }
+
+    /* Content sections — 10 color slots, rotate for >10 */
+    .section {
+      margin: 30px 0;
+      padding: 24px;
+      border-radius: var(--radius);
+      border-left: 4px solid var(--border);
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section h3 {
+      margin: 20px 0 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Section color slots — matches TOC colors */
+    #section-1  { background: #d9eae0; border-left-color: #2d6a4f; }
+    #section-2  { background: #dde6e7; border-left-color: #1d3557; }
+    #section-3  { background: #e4eff7; border-left-color: #457b9d; }
+    #section-4  { background: #d7dfe4; border-left-color: #4a4e69; }
+    #section-5  { background: #f6e9e5; border-left-color: #9d4edd; }
+    #section-6  { background: #dde0e2; border-left-color: #6c757d; }
+    #section-7  { background: #e1f4e8; border-left-color: #40916c; }
+    #section-8  { background: #f0e6f5; border-left-color: #7b2cbf; }
+    #section-9  { background: #fff2d9; border-left-color: #d4a373; }
+    #section-10 { background: #e8f0f7; border-left-color: #5c677d; }
+
+    /* Sub-section cards — lighter shade of parent section */
+    .sub-section {
+      background: rgba(255,255,255,0.5);
+      border-left: 3px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin: 14px 0;
+    }
+
+    #section-1  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #2d6a4f; }
+    #section-2  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #1d3557; }
+    #section-3  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #457b9d; }
+    #section-4  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #4a4e69; }
+    #section-5  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #9d4edd; }
+    #section-6  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #6c757d; }
+    #section-7  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #40916c; }
+    #section-8  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #7b2cbf; }
+    #section-9  .sub-section { background: rgba(255,255,255,0.55); border-left-color: #d4a373; }
+    #section-10 .sub-section { background: rgba(255,255,255,0.55); border-left-color: #5c677d; }
+
+    /* Source cards — used for cited references with URLs */
+    .source-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .source-card blockquote {
+      margin: 0;
+      padding: 0;
+    }
+
+    .source-card p {
+      margin: 8px 0;
+    }
+
+    .source-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .source-url {
+      word-break: break-all;
+      overflow-wrap: break-word;
+    }
+
+    .source-url a {
+      display: block;
+      word-break: break-all;
+    }
+
+    .source-date {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .source-quote {
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+    /* Source-specific border colors */
+    .source-card[data-source="rand"]             { border-left-color: #335cff; }
+    .source-card[data-source="brookings"]        { border-left-color: #0f766e; }
+    .source-card[data-source="csis"]             { border-left-color: #8a2be2; }
+    .source-card[data-source="cfr"]              { border-left-color: #ff7f00; }
+    .source-card[data-source="foreign-affairs"]  { border-left-color: #ff0000; }
+    .source-card[data-source="nyt"]              { border-left-color: #ffd700; }
+    .source-card[data-source="washington-post"]  { border-left-color: #008080; }
+    .source-card[data-source="ifri"]             { border-left-color: #ff69b4; }
+
+    .section ul, .section ol { margin: 0; padding-left: 18px; }
+    .section li { margin: 10px 0; }
+
+    .section table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .section th, .section td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section th {
+      font-weight: 600;
+      background: var(--surface-2);
+    }
+
+    .muted { color: var(--muted); }
+
+    .tagrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 0.92rem;
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent-2);
+      padding: 16px 18px;
+      background: color-mix(in srgb, var(--accent-2) 10%, var(--surface));
+      border-radius: 14px;
+    }
+
+    .danger {
+      border-left-color: var(--danger);
+      background: color-mix(in srgb, var(--danger) 9%, var(--surface));
+    }
+
+    .footer {
+      padding: 24px 0 40px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 30px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    /* Back-to-top floating button — mobile only */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .back-to-top:hover {
+      background: var(--surface-2);
+    }
+
+    @media (min-width: 901px) {
+      .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h3 class="toc-title">Contents</h3>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#section-1" class="toc-link">Executive Summary</a></li>
+<li class="toc-item"><a href="#section-2" class="toc-link">1. Primary Classical and Modern Authoritative Texts</a><ul class="toc-sublist">
+<li class="toc-subitem"><a href="#classical-accounts" class="toc-sublink">Classical Accounts</a></li>
+<li class="toc-subitem"><a href="#authoritative-modern-volcanological-and-archaeological-works" class="toc-sublink">Authoritative Modern Volcanological and Archaeological Works</a></li>
+</ul>
+</li>
+<li class="toc-item"><a href="#section-3" class="toc-link">2. The Cognitive Blindspot: No Word for "Volcano" and a Benign Mountain</a><ul class="toc-sublist">
+<li class="toc-subitem"><a href="#the-linguistic-void" class="toc-sublink">The Linguistic Void</a></li>
+<li class="toc-subitem"><a href="#vesuvius-as-a-pastoral-paradise" class="toc-sublink">Vesuvius as a Pastoral Paradise</a></li>
+</ul>
+</li>
+<li class="toc-item"><a href="#section-4" class="toc-link">3. Normalization of Precursors: The 62 AD Earthquake Trap</a></li>
+<li class="toc-item"><a href="#section-5" class="toc-link">4. The Deadly Timeline and Evacuation Dilemma</a><ul class="toc-sublist">
+<li class="toc-subitem"><a href="#why-people-delayed-evacuation" class="toc-sublink">Why People Delayed Evacuation</a></li>
+</ul>
+</li>
+<li class="toc-item"><a href="#section-6" class="toc-link">5. Corroborated Source Table</a></li>
+<li class="toc-item"><a href="#section-7" class="toc-link">6. Scholarly Debates and Historical Gaps</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="wrap">
+        <section class="hero">
+          <div class="eyebrow">Research Report</div>
+          <h1>The Fall of Pompeii (79 AD): Cognitive Blindness, Unpreparedness, and Volcanological Dynamics</h1>
+          <p class="lede">The destruction of Pompeii and Herculaneum in 79 AD stands as history's most poignant study in disaster cognitive blindness. The catastrophic mortality was not merely caused by geodynamic violence; it</p>
+          <div class="grid cols-3 section">
+            <div class="card stat">
+              <strong>7</strong>
+              <span>Topic Sections</span>
+            </div>
+            <div class="card stat">
+              <strong>5</strong>
+              <span>Sub-Sections</span>
+            </div>
+            <div class="card stat">
+              <strong>15</strong>
+              <span>Sources Cited</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-1" class="section">
+<h2>Executive Summary</h2>
+<p>The destruction of Pompeii and Herculaneum in 79 AD stands as history's most poignant study in disaster cognitive blindness. The catastrophic mortality was not merely caused by geodynamic violence; it was caused by <strong>total conceptual and epistemological unpreparedness</strong>. The Romans possessed no linguistic term for an active explosive volcano, regarded Mount Vesuvius (<em>Mons Vesuvius</em>) as an extinct, fertile mountain celebrated for vineyards and leisure villas, routinely dismissed warning earthquakes as mundane tremors endemic to Campania, and spent the first 18 hours of the eruption sheltering indoors from falling pumice before being annihilated by superheated pyroclastic density currents (PDCs).</p>
+</section>
+<section id="section-2" class="section">
+<h2>1. Primary Classical and Modern Authoritative Texts</h2>
+<div class="sub-section" id="classical-accounts">
+<h3>Classical Accounts</h3>
+<ol>
+<li><strong>Pliny the Younger (<em>Epistulae</em> 6.16 and 6.20 to Tacitus, ca. 106–107 AD):</strong>
+   The only surviving eyewitness account of the eruption, establishing the foundational volcanological terminology (<em>Plinian eruption</em>).</li>
+<li><em>Epistula 6.16</em> recounts the appearance of the towering column resembling an Italian umbrella pine (<em>Pinus pinea</em>), the naval rescue mission launched by his uncle Pliny the Elder from Misenum with warships (<em>quadriremes</em>), the falling of pumice and hot stones, and the Elder's death on the seashore at Stabiae from toxic sulfurous gases and respiratory failure.</li>
+<li><a href="https://dcc.dickinson.edu/pliny-letters/6-20">Dickinson College Commentaries: Pliny Letters 6.16 &amp; 6.20</a></li>
+<li><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.02.0139:book=6:letter=16">Perseus Digital Library: Pliny Letters</a></li>
+<li><em>Epistula 6.20</em> details the panic at Misenum, describing ground deformation, tsunamis pulling back the sea, and a creeping black cloud of ash rolling down across the land and bay.</li>
+<li>
+<p><a href="https://www.attalus.org/old/pliny6.html">Attalus Classical Library: Pliny Letters Book 6</a></p>
+</li>
+<li>
+<p><strong>Strabo (<em>Geographica</em> 5.4.8, ca. 20 BC – 20 AD):</strong>
+   The sole pre-eruption writer who observed that Vesuvius had volcanic characteristics based on summit morphology: barren, soot-colored rocks with cavernous hollows looking like they had been eaten away by fire. Yet Strabo concluded the mountain had burned out in primordial antiquity and was permanently extinct.</p>
+</li>
+<li>
+<p><a href="https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/5D*.html#5.4.8">LacusCurtius: Strabo Geographica 5.4.8</a></p>
+</li>
+<li>
+<p><strong>Seneca the Younger (<em>Naturales Quaestiones</em> Book 6, <em>De Terrae Motu</em>, ca. 63–65 AD):</strong>
+   Investigated the catastrophic Campanian earthquake of February 5, 62 AD, documenting widespread collapses across Pompeii and the death of 600 sheep in pastures due to toxic gas emissions. Seneca explained ground tremors through Aristotelian pneumatic theory (subterranean air pressure), inadvertently solidifying the belief that seismic tremors were normal atmospheric-crustal adjustments rather than magmatic volcanic precursors.</p>
+</li>
+<li>
+<p><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:2008.01.0578">Perseus Digital Library: Seneca Naturales Quaestiones</a></p>
+</li>
+<li>
+<p><strong>Cassius Dio (<em>Roman History</em> 66.21–23):</strong>
+   Early 3rd-century account describing the surreal horror: ominous subterranean roarings, giants seen wandering the crags, and colossal ash clouds carried as far as Rome, North Africa, and Syria.</p>
+</li>
+<li><a href="https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Cassius_Dio/66*.html#21">LacusCurtius: Cassius Dio Roman History Book 66</a></li>
+</ol>
+<p><a href="https://www.attalus.org/old/pliny6.html">Attalus Classical Library: Pliny Letters Book 6</a></p>
+<p><strong>Strabo (<em>Geographica</em> 5.4.8, ca. 20 BC – 20 AD):</strong>
+   The sole pre-eruption writer who observed that Vesuvius had volcanic characteristics based on summit morphology: barren, soot-colored rocks with cavernous hollows looking like they had been eaten away by fire. Yet Strabo concluded the mountain had burned out in primordial antiquity and was permanently extinct.</p>
+<p><a href="https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/5D*.html#5.4.8">LacusCurtius: Strabo Geographica 5.4.8</a></p>
+<p><strong>Seneca the Younger (<em>Naturales Quaestiones</em> Book 6, <em>De Terrae Motu</em>, ca. 63–65 AD):</strong>
+   Investigated the catastrophic Campanian earthquake of February 5, 62 AD, documenting widespread collapses across Pompeii and the death of 600 sheep in pastures due to toxic gas emissions. Seneca explained ground tremors through Aristotelian pneumatic theory (subterranean air pressure), inadvertently solidifying the belief that seismic tremors were normal atmospheric-crustal adjustments rather than magmatic volcanic precursors.</p>
+<p><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:2008.01.0578">Perseus Digital Library: Seneca Naturales Quaestiones</a></p>
+<p><strong>Cassius Dio (<em>Roman History</em> 66.21–23):</strong>
+   Early 3rd-century account describing the surreal horror: ominous subterranean roarings, giants seen wandering the crags, and colossal ash clouds carried as far as Rome, North Africa, and Syria.</p>
+</div>
+<div class="sub-section" id="authoritative-modern-volcanological-and-archaeological-works">
+<h3>Authoritative Modern Volcanological and Archaeological Works</h3>
+<ol>
+<li><strong>Haraldur Sigurdsson, Steven Carey, W. Cornell, and T. Pescatore (1982, 1985):</strong></li>
+<li><em>The Eruption of Vesuvius in A.D. 79: Reconstruction from Historical and Volcanological Evidence</em>, <em>American Journal of Archaeology</em>, 86(1), 39–51. <a href="https://doi.org/10.2307/504292">DOI: 10.2307/504292</a>.</li>
+<li>Stratigraphic mapping that reconciled Pliny's text with physical volcanology: delineated the 18-hour sustained Plinian fall phase (white and grey pumice) from the subsequent column collapse generating six catastrophic pyroclastic density currents (S-1 through S-6).</li>
+<li><strong>Mary Beard (<em>The Fires of Vesuvius: Pompeii Lost and Found</em> / <em>Pompeii: The Life of a Roman Town</em>, Harvard University Press / Profile, 2008):</strong></li>
+<li>Dismantles the myth of a population caught entirely by surprise mid-sentence; details the messy reality of civic reconstruction, gradual evacuation, household risk assessments, and the thousands who delayed fleeing to guard belongings or because early falling pumice seemed manageable.</li>
+<li><a href="https://www.hup.harvard.edu/books/9780674045865">Harvard University Press Catalog: The Fires of Vesuvius</a></li>
+<li><strong>Pier Paolo Petrone, Giuseppe Mastrolorenzo et al. (2010, 2020):</strong></li>
+<li><em>Lethal Thermal Impact at Periphery of Pyroclastic Surges: Evidences at Pompeii</em>, <em>PLOS ONE</em>, 5(6), e11127. <a href="https://doi.org/10.1371/journal.pone.0011127">DOI: 10.1371/journal.pone.0011127</a>.</li>
+<li><em>Heat-induced brain vitrification from the Vesuvius eruption in c.e. 79</em>, <em>New England Journal of Medicine</em>, 382(4), 383–384. <a href="https://doi.org/10.1056/NEJMc1909867">DOI: 10.1056/NEJMc1909867</a>.</li>
+<li>Proven via bioanthropology and bone crystallization that victims in Pompeii and Herculaneum did not die primarily of slow ash asphyxiation, but of instant fulminant thermal shock (temperatures of 250–300°C in Pompeii, 480–600°C in Herculaneum), causing instantaneous cadaveric spasms (the "pugilistic attitude") and skull fractures.</li>
+<li><strong>Luongo et al. (2003):</strong></li>
+<li><em>Impact of the AD 79 explosive eruption on Pompeii: Causes of death inferred by stratigraphic analysis</em>, <em>Journal of Volcanology and Geothermal Research</em>, 126(1–2), 169–200. <a href="https://doi.org/10.1016/S0377-0273(03)00125-4">DOI: 10.1016/S0377-0273(03)00125-4</a>.</li>
+<li>Demonstrated that roughly 38% of victims perished in buildings from roof collapses during the initial pumice fall, while 62% were killed outdoors or in compromised rooms by Pyroclastic Surge 4 (S-4).</li>
+</ol>
+</div>
+</section>
+<section id="section-3" class="section">
+<h2>2. The Cognitive Blindspot: No Word for "Volcano" and a Benign Mountain</h2>
+<pre><span></span><code>┌─────────────────────────────────────────────────────────────┐
+│<span class="w">                 </span><span class="nv">ROMAN</span><span class="w"> </span><span class="nv">WORLDVIEW</span><span class="w"> </span><span class="ss">(</span><span class="nv">Pre</span><span class="o">-</span><span class="mi">79</span><span class="w"> </span><span class="nv">AD</span><span class="ss">)</span><span class="w">                  </span>│
+├─────────────────────────────────────────────────────────────┤
+│<span class="w"> </span>•<span class="w"> </span><span class="nv">No</span><span class="w"> </span><span class="nv">noun</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s2">"Volcano"</span><span class="w"> </span><span class="ss">(</span><span class="nv">Vulcanus</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="nv">solely</span><span class="w"> </span><span class="nv">god</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">fire</span><span class="ss">)</span><span class="w">   </span>│
+│<span class="w"> </span>•<span class="w"> </span><span class="nv">Vesuvius</span><span class="w"> </span><span class="nv">called</span><span class="w"> </span><span class="s2">"Mons Vesuvius"</span><span class="w"> </span><span class="ss">(</span><span class="nv">a</span><span class="w"> </span><span class="nv">benign</span><span class="w"> </span><span class="nv">green</span><span class="w"> </span><span class="nv">peak</span><span class="ss">)</span><span class="w">     </span>│
+│<span class="w"> </span>•<span class="w"> </span><span class="nv">Dormant</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="o">~</span><span class="mi">750</span><span class="w"> </span><span class="nv">years</span><span class="w"> </span><span class="ss">(</span><span class="nv">since</span><span class="w"> </span><span class="nv">Bronze</span><span class="w"> </span><span class="nv">Age</span><span class="w"> </span><span class="nv">Avellino</span><span class="ss">)</span><span class="w">        </span>│
+│<span class="w"> </span>•<span class="w"> </span><span class="nv">Famous</span><span class="w"> </span><span class="nv">vineyards</span>,<span class="w"> </span><span class="nv">Falernian</span><span class="w"> </span><span class="nv">wine</span>,<span class="w"> </span><span class="nv">olive</span><span class="w"> </span><span class="nv">groves</span>,<span class="w"> </span><span class="nv">villas</span><span class="w">    </span>│
+│<span class="w"> </span>•<span class="w"> </span><span class="mi">73</span><span class="w"> </span><span class="nv">BC</span>:<span class="w"> </span><span class="nv">Spartacus</span><span class="w"> </span><span class="nv">rebels</span><span class="w"> </span><span class="nv">camp</span><span class="w"> </span><span class="nv">inside</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">peaceful</span><span class="w"> </span><span class="nv">crater</span><span class="w">   </span>│
+│<span class="w"> </span>•<span class="w"> </span><span class="nv">Earthquakes</span><span class="w"> </span><span class="nv">viewed</span><span class="w"> </span><span class="nv">as</span><span class="w"> </span><span class="nv">ordinary</span><span class="w"> </span><span class="nv">atmospheric</span><span class="o">/</span><span class="nv">crust</span><span class="w"> </span><span class="nv">settling</span><span class="w"> </span>│
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<div class="sub-section" id="the-linguistic-void">
+<h3>The Linguistic Void</h3>
+<p>Classical Latin possessed <strong>no noun equivalent to the word "volcano"</strong>. 
+- The term derives from <em>Vulcanus</em>, the Roman god of fire, metallurgy, and smithing, whose divine forge was mythical under Mount Etna or the Aeolian island of Vulcano.
+- While the Romans were familiar with Mount Etna (<em>Aetna</em>) and Stromboli as active wonders of the world, they considered them isolated oddities.
+- They had no geological taxonomy linking continental mountains to magma reservoirs, volatile gas pressures, or explosive caldera collapses. Vesuvius was categorized simply as a <em>mons</em> (mountain).</p>
+</div>
+<div class="sub-section" id="vesuvius-as-a-pastoral-paradise">
+<h3>Vesuvius as a Pastoral Paradise</h3>
+<ul>
+<li>Prior to 79 AD, Vesuvius had been dormant for roughly seven to eight centuries—since the Bronze Age Avellino eruption (ca. 1900–1700 BC).</li>
+<li>Its slopes were terraced with famous vineyards producing prized Roman wines (<em>Falernian</em>, <em>Vesuvinum</em>).</li>
+<li>Wall frescoes excavated from Pompeii—such as the celebrated fresco in the House of the Centenary (now in the National Archaeological Museum of Naples)—depict Bacchus covered in grapes standing alongside a green, serene, vine-covered Vesuvius.</li>
+<li>In 73 BC, during the Third Servile War, <strong>Spartacus and roughly 70 gladiator rebels retreated to the summit crater of Vesuvius</strong>. Plutarch (<em>Life of Crassus</em> 9.1–3) describes the crater not as a volcanic vent, but as an overgrown bowl surrounded by sheer rocks draped with wild grapevines. Spartacus and his men braided ladders out of wild vines, descended unseen down the back precipices, and ambushed the Roman forces under Gaius Claudius Glaber. To the Roman mind, Vesuvius was defensible terrain and farming land, not a geological weapon.</li>
+</ul>
+</div>
+</section>
+<section id="section-4" class="section">
+<h2>3. Normalization of Precursors: The 62 AD Earthquake Trap</h2>
+<p>Seventeen years before the eruption, in February 62 AD (or 63 AD), a massive tectonic earthquake ($M_w \approx 5.5 - 6.0$) shattered Pompeii, Herculaneum, and Nuceria.
+- Rather than being understood as a sign of magmatic ascent, it was treated as a conventional regional tragedy.
+- In the 17 years leading up to 79 AD, Pompeii was an enormous construction site. Temples, private houses, and public baths were being repaired, meaning citizens were fully desensitized to scaffolding, cracked walls, and settling masonry.
+- Pliny the Younger confirms this psychological normalization in <em>Epistula 6.20.1</em>:</p>
+<blockquote>
+<p><em>"Praecesserat per multos dies tremor terrae, minus formidolosus quia Campaniae solitus..."</em><br/>
+("For many days before, there had been earth tremors, which produced little alarm because they were frequent in Campania...")
+- In the days preceding the eruption, freshwater wells went dry and springs ceased flowing—caused by the rising magma chamber bulging the crust and fracturing the subterranean aquifer—yet this was chalked up to summer drought.</p>
+</blockquote>
+<p><em>"Praecesserat per multos dies tremor terrae, minus formidolosus quia Campaniae solitus..."</em><br/>
+("For many days before, there had been earth tremors, which produced little alarm because they were frequent in Campania...")
+- In the days preceding the eruption, freshwater wells went dry and springs ceased flowing—caused by the rising magma chamber bulging the crust and fracturing the subterranean aquifer—yet this was chalked up to summer drought.</p>
+</section>
+<section id="section-5" class="section">
+<h2>4. The Deadly Timeline and Evacuation Dilemma</h2>
+<p>The physical progression of the eruption unfolded over two starkly contrasting phases that together formed a fatal trap:</p>
+<pre><span></span><code><span class="o">+===================================================================================+</span>
+
+<span class="o">|</span><span class="w"> </span><span class="n">PHASE</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">PLINIAN</span><span class="w"> </span><span class="n">PUMICE</span><span class="w"> </span><span class="n">FALL</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="mi">18</span><span class="w"> </span><span class="n">Hours</span><span class="p">)</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="s2">"The Illusion of Safety"</span><span class="w">                </span><span class="o">|</span>
+<span class="o">+===================================================================================+</span>
+
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Convective</span><span class="w"> </span><span class="n">plume</span><span class="w"> </span><span class="n">ascends</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="n">km</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">stratosphere</span><span class="o">.</span><span class="w">                     </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Pumice</span><span class="w"> </span><span class="n">fall</span><span class="w"> </span><span class="n">accumulates</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mi">12</span><span class="err">–</span><span class="mi">15</span><span class="w"> </span><span class="n">cm</span><span class="o">/</span><span class="n">hour</span><span class="p">;</span><span class="w"> </span><span class="mf">2.8</span><span class="w"> </span><span class="n">meters</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="n">depth</span><span class="o">.</span><span class="w">               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">RISK</span><span class="w"> </span><span class="n">AMBIGUITY</span><span class="p">:</span><span class="w"> </span><span class="n">Lightweight</span><span class="w"> </span><span class="n">pumice</span><span class="w"> </span><span class="n">seems</span><span class="w"> </span><span class="n">survivable</span><span class="p">;</span><span class="w"> </span><span class="n">people</span><span class="w"> </span><span class="n">shelter</span><span class="w"> </span><span class="n">inside</span><span class="w">      </span><span class="o">|</span>
+<span class="o">|</span><span class="w">   </span><span class="ow">or</span><span class="w"> </span><span class="n">tie</span><span class="w"> </span><span class="n">pillows</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">heads</span><span class="o">.</span><span class="w"> </span><span class="n">Delaying</span><span class="w"> </span><span class="n">evacuation</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">protect</span><span class="w"> </span><span class="n">property</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">wait</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">out</span><span class="o">.|</span>
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">TRAP</span><span class="w"> </span><span class="n">CLOSES</span><span class="p">:</span><span class="w"> </span><span class="n">Pumice</span><span class="w"> </span><span class="n">accumulates</span><span class="w"> </span><span class="n">against</span><span class="w"> </span><span class="n">doors</span><span class="p">,</span><span class="w"> </span><span class="n">trapping</span><span class="w"> </span><span class="n">people</span><span class="w"> </span><span class="n">inside</span><span class="p">;</span><span class="w"> </span><span class="n">roofs</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w">   </span><span class="n">collapse</span><span class="w"> </span><span class="n">under</span><span class="w"> </span><span class="mi">400</span><span class="o">+</span><span class="w"> </span><span class="n">kg</span><span class="o">/</span><span class="n">m²</span><span class="w"> </span><span class="nb">load</span><span class="w"> </span><span class="p">(</span><span class="n">causing</span><span class="w"> </span><span class="o">~</span><span class="mi">38</span><span class="o">%</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="n">deaths</span><span class="p">)</span><span class="o">.</span><span class="w">                  </span><span class="o">|</span>
+<span class="o">+-----------------------------------------------------------------------------------+</span>
+<span class="w">                                         </span><span class="err">│</span>
+<span class="w">                                         </span><span class="err">▼</span><span class="w"> </span><span class="n">Conduit</span><span class="w"> </span><span class="n">erosion</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Column</span><span class="w"> </span><span class="n">Collapse</span>
+<span class="o">+===================================================================================+</span>
+
+<span class="o">|</span><span class="w"> </span><span class="n">PHASE</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="n">PYROCLASTIC</span><span class="w"> </span><span class="n">DENSITY</span><span class="w"> </span><span class="n">CURRENTS</span><span class="w"> </span><span class="p">(</span><span class="n">PDCs</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="mi">6</span><span class="w"> </span><span class="n">Hours</span><span class="p">)</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="s2">"Mass Annihilation"</span><span class="w">     </span><span class="o">|</span>
+<span class="o">+===================================================================================+</span>
+
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Buoyant</span><span class="w"> </span><span class="n">plume</span><span class="w"> </span><span class="n">collapses</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">ground</span><span class="o">-</span><span class="n">hugging</span><span class="w"> </span><span class="n">avalanche</span><span class="w"> </span><span class="n">surges</span><span class="w"> </span><span class="p">(</span><span class="mi">100</span><span class="err">–</span><span class="mi">300</span><span class="w"> </span><span class="n">km</span><span class="o">/</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="w">    </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Herculaneum</span><span class="w"> </span><span class="n">incinerated</span><span class="w"> </span><span class="n">early</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">Surges</span><span class="w"> </span><span class="mi">1</span><span class="err">–</span><span class="mi">2</span><span class="w"> </span><span class="p">(</span><span class="mi">400</span><span class="err">–</span><span class="mi">500</span><span class="err">°</span><span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="w">                        </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Pompeii</span><span class="w"> </span><span class="n">struck</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">Surge</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">early</span><span class="w"> </span><span class="n">morning</span><span class="w"> </span><span class="p">(</span><span class="n">ca</span><span class="o">.</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span><span class="mi">30</span><span class="w"> </span><span class="n">AM</span><span class="p">)</span><span class="o">.</span><span class="w">                 </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Surge</span><span class="w"> </span><span class="n">temperatures</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">Pompeii</span><span class="p">:</span><span class="w"> </span><span class="mi">250</span><span class="err">–</span><span class="mi">300</span><span class="err">°</span><span class="n">C</span><span class="o">.</span><span class="w">                                       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">LETHAL</span><span class="w"> </span><span class="n">MECHANISM</span><span class="p">:</span><span class="w"> </span><span class="n">Instantaneous</span><span class="w"> </span><span class="n">thermal</span><span class="w"> </span><span class="n">shock</span><span class="p">,</span><span class="w"> </span><span class="n">thermal</span><span class="w"> </span><span class="n">coagulation</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">brain</span><span class="w"> </span><span class="ow">and</span><span class="w">  </span><span class="o">|</span>
+<span class="o">|</span><span class="w">   </span><span class="n">vital</span><span class="w"> </span><span class="n">organs</span><span class="p">,</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">cadaveric</span><span class="w"> </span><span class="n">spasm</span><span class="w"> </span><span class="p">(</span><span class="s2">"pugilistic stance"</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">causing</span><span class="w"> </span><span class="o">~</span><span class="mi">62</span><span class="o">%</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">deaths</span><span class="p">)</span><span class="o">.|</span>
+<span class="o">+===================================================================================+</span>
+</code></pre>
+<div class="sub-section" id="why-people-delayed-evacuation">
+<h3>Why People Delayed Evacuation</h3>
+<ol>
+<li><strong>Initial Survivability:</strong> The early pumice fall was frightening but not immediately lethal outdoors if one had makeshift protection (Pliny describes people tying pillows onto their heads with linen cloths).</li>
+<li><strong>Economic and Domestic Ties:</strong> Citizens delayed leaving to safeguard coin purses, jewelry, and legal deeds, or hesitated to abandon elderly relatives, expecting the ash shower to end.</li>
+<li><strong>The Physical Barrier:</strong> As meters of pumice banked against outer walls, doors became barricaded from the exterior, trapping those who sought refuge in internal ground-floor rooms.</li>
+<li><strong>The Final Surge (S-4):</strong> When the stratospheric column finally collapsed, a dilute, ground-hugging surge of gas and fine ash swept over Pompeii at over 100 km/h. At temperatures between 250°C and 300°C, it killed everyone exposed in seconds through fulminant thermal shock, sealing Pompeii under 4–6 meters of deposits.</li>
+</ol>
+</div>
+</section>
+<section id="section-6" class="section">
+<h2>5. Corroborated Source Table</h2>
+<table>
+<thead>
+<tr>
+<th>Topic / Finding</th>
+<th>Source / Reference</th>
+<th>Confidence Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Eyewitness umbrella pine column &amp; Pliny the Elder mission</td>
+<td><a href="https://dcc.dickinson.edu/pliny-letters/6-20">Pliny the Younger, <em>Epistulae</em> 6.16 &amp; 6.20</a></td>
+<td>HIGH (direct primary historical source)</td>
+</tr>
+<tr>
+<td>Lack of Roman word for volcano; pastoral dormant mountain</td>
+<td><a href="https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/5D*.html#5.4.8">Strabo, <em>Geographica</em> 5.4.8</a>; Plutarch, <em>Life of Crassus</em> 9</td>
+<td>HIGH (classical consensus)</td>
+</tr>
+<tr>
+<td>Normalization of 62 AD earthquake and precursor tremors</td>
+<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:2008.01.0578">Seneca, <em>Nat. Quaest.</em> 6</a>; Pliny <em>Ep.</em> 6.20.5</td>
+<td>HIGH (primary textual confirmation)</td>
+</tr>
+<tr>
+<td>Two-phase Plinian fall vs. PDC column collapse</td>
+<td><a href="https://doi.org/10.2307/504292">Sigurdsson et al. (1982, 1985), <em>Am. J. Archaeology</em></a></td>
+<td>HIGH (modern geological benchmark)</td>
+</tr>
+<tr>
+<td>Evacuation dynamics, human hesitation, roof collapse mortality</td>
+<td><a href="https://www.hup.harvard.edu/books/9780674045865">Mary Beard, <em>Pompeii: The Life of a Roman Town</em> (2008)</a></td>
+<td>HIGH (foremost modern archaeological study)</td>
+</tr>
+<tr>
+<td>Instant thermal shock vs. asphyxiation; body vitrification</td>
+<td><a href="https://doi.org/10.1371/journal.pone.0011127">Petrone et al. (2010, 2020), <em>PLOS ONE</em> / <em>NEJM</em></a></td>
+<td>HIGH (empirical bioanthropology &amp; taphonomy)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="section-7" class="section">
+<h2>6. Scholarly Debates and Historical Gaps</h2>
+<ul>
+<li><strong>Calendar Date (August 24 vs. Autumn/October):</strong> The traditional date of August 24 comes from the medieval manuscript tradition of Pliny's letters. However, recent archaeological excavations at Pompeii uncovered a charcoal inscription dated to mid-October (<em>XVI K Nov</em>), alongside autumn fruits (pomegranates, walnuts) and braziers in houses, suggesting the eruption actually occurred around October 24–25, 79 AD.</li>
+<li><strong>Total Death Toll:</strong> While roughly 1,150 bodies have been excavated in Pompeii and several hundred in Herculaneum, scholars estimate the total regional mortality across Pompeii, Herculaneum, Stabiae, and Oplontis between 2,000 and 3,500 people, with over 70–80% of the urban population successfully evacuating during the first 12 hours.</li>
+</ul>
+</section>
+
+        <footer class="footer">
+          <p>Oracle Research — The Fall of Pompeii (79 AD): Cognitive Blindness, Unpreparedness, and Volcanological Dynamics</p>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">&#9650;</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('.section[id]');
+      const tocLinks = document.querySelectorAll('.toc-link, .toc-sublink');
+      function updateActiveLink() {
+        let current = '';
+        sections.forEach(function(s) {
+          if (pageYOffset >= s.offsetTop - 100) current = s.getAttribute('id');
+        });
+        tocLinks.forEach(function(link) {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+        });
+      }
+      window.addEventListener('scroll', updateActiveLink);
+      updateActiveLink();
+
+      // Back-to-top button — visible after 300px scroll
+      const btn = document.getElementById('backToTop');
+      window.addEventListener('scroll', function() {
+        btn.classList.toggle('visible', pageYOffset > 300);
+      });
+      btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Collapsible TOC - click section to toggle sub-items
+      const isMobile = window.innerWidth <= 900;
+      document.querySelectorAll('.toc-item').forEach(function(item) {
+        const sublist = item.querySelector('.toc-sublist');
+        if (!sublist) return;
+        const link = item.querySelector('.toc-link');
+        if (link) link.style.cursor = 'pointer';
+        if (isMobile) sublist.classList.add('collapsed');
+        if (link) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            sublist.classList.toggle('collapsed');
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
